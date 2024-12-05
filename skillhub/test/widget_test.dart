@@ -1,29 +1,53 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:skillhub/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('SkillHub App Widget Tests', () {
+    testWidgets('HomePage displays SkillHub title',
+        (WidgetTester tester) async {
+      // Build the HomePage widget.
+      await tester.pumpWidget(SkillHubApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Verify the title is displayed.
+      expect(find.text('SkillHub'), findsOneWidget);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    testWidgets('HomePage has Login and Register buttons',
+        (WidgetTester tester) async {
+      // Build the HomePage widget.
+      await tester.pumpWidget(SkillHubApp());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      // Verify that Login and Register buttons exist.
+      expect(find.text('Login'), findsOneWidget);
+      expect(find.text('Register'), findsOneWidget);
+    });
+
+    testWidgets('Navigating to LoginScreen works', (WidgetTester tester) async {
+      await tester.pumpWidget(SkillHubApp());
+
+      // Tap the Login button.
+      final loginButton = find.text('Login');
+      expect(loginButton, findsOneWidget);
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      // Verify the LoginScreen is displayed.
+      expect(find.text('Login Screen Placeholder'), findsOneWidget);
+    });
+
+    testWidgets('Navigating to RegisterScreen works',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(SkillHubApp());
+
+      // Tap the Register button.
+      final registerButton = find.text('Register');
+      expect(registerButton, findsOneWidget);
+      await tester.tap(registerButton);
+      await tester.pumpAndSettle();
+
+      // Verify the RegisterScreen is displayed.
+      expect(find.text('Register Screen Placeholder'), findsOneWidget);
+    });
   });
 }
